@@ -1,0 +1,28 @@
+<launch>
+  <arg name="base_local_planner" default="base_local_planner/TrajectoryPlannerROS" />
+  <arg name="goal_x" default="0" />
+  <arg name="goal_y" default="10" /> 
+
+  <!-- Start the navigation stack -->
+  <!-- The configuration files are loaded from jackal_helper -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+    <rosparam file="$(find jackal_helper)/configs/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find jackal_helper)/configs/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+    <rosparam file="$(find jackal_helper)/configs/params/odom_nav_params/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find jackal_helper)/configs/params/odom_nav_params/local_costmap_params.yaml" command="load" />
+
+    <rosparam file="$(find jackal_helper)/configs/params/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find jackal_helper)/configs/params/move_base_params.yaml" command="load" />
+
+    <param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+    <param name="base_local_planner" value="$(arg base_local_planner)"/>
+
+    <remap from="odom" to="odometry/filtered" />
+  </node>
+
+  <node pkg="rostopic" type="rostopic" name="published_goal" args='pub -r 10 /move_base_simple/goal geometry_msgs/PoseStamped "{header: {stamp: now, frame_id: "odom"}, pose: {position: {x: $(arg goal_x), y: $(arg goal_y), z: 0.0}, orientation: {z: 0.7071068, w: 0.7071068}}}"' output="screen">
+  </node>
+
+</launch>
