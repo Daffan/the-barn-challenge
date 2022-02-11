@@ -1,6 +1,4 @@
-import os
 import time
-import signal
 import argparse
 import subprocess
 from os.path import join
@@ -18,7 +16,7 @@ def compute_distance(p1, p2):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
-    parser.add_argument('--navigation_stack', type=str, default="jackal_helper/launch/move_base.launch",\
+    parser.add_argument('--navigation_stack', type=str, default="jackal_helper/launch/DWA.launch",\
         help="path to the launch file of the tested navigation stack (relative to the path of this repo)")
     parser.add_argument('--world_idx', type=int, default=0)
     parser.add_argument('--gui', action="store_true")

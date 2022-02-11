@@ -1,5 +1,4 @@
 <launch>
-  <arg name="base_local_planner" default="base_local_planner/TrajectoryPlannerROS" />
   <arg name="goal_x" default="0" />
   <arg name="goal_y" default="10" /> 
 
@@ -17,7 +16,7 @@
     <rosparam file="$(find jackal_helper)/configs/params/move_base_params.yaml" command="load" />
 
     <param name="base_global_planner" type="string" value="navfn/NavfnROS" />
-    <param name="base_local_planner" value="$(arg base_local_planner)"/>
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
 
     <remap from="odom" to="odometry/filtered" />
   </node>
