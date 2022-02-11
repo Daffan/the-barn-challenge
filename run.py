@@ -48,12 +48,14 @@ if __name__ == "__main__":
     
     pos = gazebo_sim.get_model_state().pose.position
     curr_coor = (pos.x, pos.y)
+    collided = True
     
-    # check whether the robot is reset
-    while compute_distance(init_coor, curr_coor) > 0.1:
+    # check whether the robot is reset, the collision is False
+    while compute_distance(init_coor, curr_coor) > 0.1 or collided:
         gazebo_sim.reset() # Reset to the initial position
         pos = gazebo_sim.get_model_state().pose.position
         curr_coor = (pos.x, pos.y)
+        collided = gazebo_sim.get_hard_collision()
         time.sleep(1)
     
     launch_file = join(base_path, '..', args.navigation_stack)
@@ -68,6 +70,7 @@ if __name__ == "__main__":
     curr_time = rospy.get_time()
     pos = gazebo_sim.get_model_state().pose.position
     curr_coor = (pos.x, pos.y)
+
     
     # check whether the robot started to move
     while compute_distance(init_coor, curr_coor) < 0.1:
@@ -75,7 +78,6 @@ if __name__ == "__main__":
         pos = gazebo_sim.get_model_state().pose.position
         curr_coor = (pos.x, pos.y)
         time.sleep(0.01)
-    
     
     # start navigation, check position, time and collision
     start_time = curr_time
