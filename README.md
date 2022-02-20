@@ -15,7 +15,7 @@ If you run it on a local machine without containers:
 
 If you run it in Singularity containers:
 * Go version at least 1.13
-* Singularity at least 3.63
+* Singularity at least 3.6.3
 
 Requiremnts above are just suggestions. If you run into any issue, please contact organizers for help (zfxu@utexas.edu).
 
@@ -65,6 +65,8 @@ catkin_make
 
 Follow the instruction below to run simulations in Singularity containers.
 
+1. Follow this instruction to install Singularity: https://sylabs.io/guides/3.0/user-guide/installation.html. Singularity version >= 3.6.3 is required to successfully build the image!
+
 1. Build Singularity image (sudo access required)
 ```
 sudo singularity build --notest nav_competition_image.sif Singularityfile.def
@@ -112,3 +114,6 @@ python3 run.py \
 --world_idx 0 \
 --navigation_stack ../<YOUR_REPO>/<YOUR_LAUNCH_FILE>
 ```
+
+## Submission
+TBD...
