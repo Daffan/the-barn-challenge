@@ -1,5 +1,5 @@
 <p align="center">
-  <img width = "100%" src='res/jackal_allsims.png' />
+  <img width = "100%" src='res/BARN_Challenge.png' />
   </p>
 
 --------------------------------------------------------------------------------
@@ -25,8 +25,8 @@ Follow the instructions below to run simulations on your local machines.
 1. Create a virtual environment (we show examples with python venv, you can use conda instead)
 ```
 apt -y update; apt-get -y install python3-venv
-python3 -m venv /<YOUR_HOME_DIC>/nav_challenge
-export PATH="/<YOUR_HOME_DIC>/nav_challenge/bin:$PATH"
+python3 -m venv /<YOUR_HOME_DIR>/nav_challenge
+export PATH="/<YOUR_HOME_DIR>/nav_challenge/bin:$PATH"
 ```
 
 2. Install Python dependencies
@@ -36,8 +36,8 @@ pip3 install defusedxml rospkg netifaces numpy
 
 3. Create ROS workspace
 ```
-mkdir -p /<YOUR_HOME_DIC>/jackal_ws/src
-cd /<YOUR_HOME_DIC>/jackal_ws/src
+mkdir -p /<YOUR_HOME_DIR>/jackal_ws/src
+cd /<YOUR_HOME_DIR>/jackal_ws/src
 ```
 
 4. Clone this repo and required ros packages
@@ -73,21 +73,21 @@ sudo singularity build --notest nav_competition_image.sif Singularityfile.def
 ```
 
 ## Run Simulations
-If you it run on your local machines: (the example runs [move_base](http://wiki.ros.org/move_base) with DWA local planner in world 0)
+If you run it on your local machines: (the example below runs [move_base](http://wiki.ros.org/move_base) with DWA local planner in world 0)
 ```
 python3 run.py \
 --world_idx 0 \
 --navigation_stack jackal_helper/launch/move_base_DWA.launch
 ```
 
-If you run it in Sinularity containers:
+If you run it in a Sinularity container:
 ```
 ./singularity_run.sh /path/to/image/file python3 run.py \
 --world_idx 0 \
 --navigation_stack jackal_helper/launch/DWA.launch
 ```
 
-A successful run should print episode status (collided/succeeded/timeout) and the time cost in second:
+A successful run should print the episode status (collided/succeeded/timeout) and the time cost in second:
 > \>>>>>>>>>>>>>>>>>> Test finished! <<<<<<<<<<<<<<<<<<
 >
 > Navigation collided with time 27.2930 (s)
