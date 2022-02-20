@@ -24,13 +24,13 @@ Follow the instructions below to run simulations on your local machines.
 
 1. Create a virtual environment (we show examples with python venv, you can use conda instead)
 ```
+apt -y update; apt-get -y install python3-venv
 python3 -m venv /<YOUR_HOME_DIC>/nav_challenge
 export PATH="/<YOUR_HOME_DIC>/nav_challenge/bin:$PATH"
 ```
 
 2. Install Python dependencies
 ```
-apt -y update; pip3 install --upgrade pip
 pip3 install defusedxml rospkg netifaces numpy
 ```
 
