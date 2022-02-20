@@ -8,9 +8,11 @@ From: ros:melodic
     . /jackal_ws/src/nav-competition-icra2022
 
 %post -c /bin/bash
-    apt -y update; apt-get -y install python3-pip protobuf-compiler libprotobuf-dev; pip3 install --upgrade pip
+    python3 -m venv /venv
+    PATH="/venv/bin:$PATH"
+    apt -y update; pip3 install --upgrade pip
     cd /jackal_ws/src/nav-competition-icra2022
-    pip3 install defusedxml rospkg netifaces
+    pip3 install defusedxml rospkg netifaces numpy
     
     cd ..
     git clone https://github.com/jackal/jackal.git
