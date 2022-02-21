@@ -15,9 +15,9 @@ If you run it on a local machine without containers:
 
 If you run it in Singularity containers:
 * Go version at least 1.13
-* Singularity at least 3.6.3
+* Singularity version at least 3.6.3
 
-Requiremnts above are just suggestions. If you run into any issue, please contact organizers for help (zfxu@utexas.edu).
+The requirements above are just suggestions. If you run into any issue, please contact organizers for help (zfxu@utexas.edu).
 
 ## Installation
 Follow the instructions below to run simulations on your local machines.
@@ -104,7 +104,7 @@ A successful run should print the episode status (collided/succeeded/timeout) an
 ## Test your own navigation stack
 We currently don't provide a lot of instructions or a standard API for implementing the navigation stack, but we might add more in this section depending on people's feedback. If you are new to the ROS or mobile robot navigation, we suggest checking [move_base](http://wiki.ros.org/move_base) which provides basic interface to manipulate a robot.
 
-We recommand building your navigation stack as a separate ROS package and upload on github. Once you have you own github repo, clone it under the path `/<YOUR_HOME_DIC>/jackal_ws/src`, then rebuid the work space. if you use Singularity container, add the command to clone your repo before line 18 in `Singularityfile.def`
+We recommand building your navigation stack as a separate ROS package and upload it on github. Once you have you own github repo, clone it under the path `/<YOUR_HOME_DIC>/jackal_ws/src`, then rebuid the work space. if you use Singularity container, add the command to clone your repo before line 18 in `Singularityfile.def`
 
 Your navigation stack should be called with a single launch file (similar to `jackal_helper/launch/move_base_DWA.launch` or `jackal_helper/launch/move_base_eband.launch`). The launch file takes two arguments: `goal_x` and `goal_y` that specifies the relative goal location in the world frame.
 
