@@ -67,7 +67,13 @@ Follow the instruction below to run simulations in Singularity containers.
 
 1. Follow this instruction to install Singularity: https://sylabs.io/guides/3.0/user-guide/installation.html. Singularity version >= 3.6.3 is required to successfully build the image!
 
-1. Build Singularity image (sudo access required)
+2. Clone this repo
+```
+git clone https://github.com/Daffan/nav-competition-icra2022.git
+cd nav-competition-icra2022
+```
+
+2. Build Singularity image (sudo access required)
 ```
 sudo singularity build --notest nav_competition_image.sif Singularityfile.def
 ```
@@ -80,7 +86,7 @@ python3 run.py \
 --navigation_stack jackal_helper/launch/move_base_DWA.launch
 ```
 
-If you run it in a Sinularity container:
+If you run it in a Singularity container:
 ```
 ./singularity_run.sh /path/to/image/file python3 run.py \
 --world_idx 0 \
@@ -104,7 +110,7 @@ A successful run should print the episode status (collided/succeeded/timeout) an
 ## Test your own navigation stack
 We currently don't provide a lot of instructions or a standard API for implementing the navigation stack, but we might add more in this section depending on people's feedback. If you are new to the ROS or mobile robot navigation, we suggest checking [move_base](http://wiki.ros.org/move_base) which provides basic interface to manipulate a robot.
 
-We recommand building your navigation stack as a separate ROS package and upload it on github. Once you have you own github repo, clone it under the path `/<YOUR_HOME_DIC>/jackal_ws/src`, then rebuid the work space. if you use Singularity container, add the command to clone your repo before line 18 in `Singularityfile.def`
+We recommand building your navigation stack as a separate ROS package and upload it on github. Once you have you own github repo, clone it under the path `/<YOUR_HOME_DIC>/jackal_ws/src`, then rebuild the workspace. if you use Singularity containers, add the command to clone your repo before line 18 in `Singularityfile.def`
 
 Your navigation stack should be called with a single launch file (similar to `jackal_helper/launch/move_base_DWA.launch` or `jackal_helper/launch/move_base_eband.launch`). The launch file takes two arguments: `goal_x` and `goal_y` that specifies the relative goal location in the world frame.
 
