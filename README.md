@@ -90,7 +90,7 @@ If you run it in a Singularity container:
 ```
 ./singularity_run.sh /path/to/image/file python3 run.py \
 --world_idx 0 \
---navigation_stack jackal_helper/launch/DWA.launch
+--navigation_stack jackal_helper/launch/move_base_DWA.launch
 ```
 
 A successful run should print the episode status (collided/succeeded/timeout) and the time cost in second:
