@@ -1,6 +1,7 @@
 import time
 import argparse
 import subprocess
+import os
 from os.path import join
 
 import numpy as np
@@ -37,6 +38,8 @@ if __name__ == "__main__":
     ##########################################################################################
     ## 0. Launch Gazebo Simulation
     ##########################################################################################
+    os.environ["JACKAL_FRONT_ACCESSORY_FENDER"] = "1"
+    os.environ["JACKAL_FRONT_FENDER_UST10"] = "1"
     
     world_name = "BARN/world_%d.world" %(args.world_idx)
     print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
