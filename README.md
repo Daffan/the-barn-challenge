@@ -20,7 +20,7 @@ If you run it in Singularity containers:
 The requirements above are just suggestions. If you run into any issue, please contact organizers for help (zfxu@utexas.edu).
 
 ## Installation
-Follow the instructions below to run simulations on your local machines.
+Follow the instructions below to run simulations on your local machines. (You can skip 1-6 if you only use Singularity container)
 
 1. Create a virtual environment (we show examples with python venv, you can use conda instead)
 ```
@@ -73,14 +73,17 @@ git clone https://github.com/Daffan/nav-competition-icra2022.git
 cd nav-competition-icra2022
 ```
 
-2. Build Singularity image (sudo access required)
+3. Build Singularity image (sudo access required)
 ```
 sudo singularity build --notest nav_competition_image.sif Singularityfile.def
 ```
 
 ## Run Simulations
+Navigate to the folder of this repo
+
 If you run it on your local machines: (the example below runs [move_base](http://wiki.ros.org/move_base) with DWA local planner in world 0)
 ```
+source ../../devel/setup.sh
 python3 run.py \
 --world_idx 0 \
 --navigation_stack jackal_helper/launch/move_base_DWA.launch
