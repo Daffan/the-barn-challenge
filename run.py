@@ -3,6 +3,7 @@ import argparse
 import subprocess
 from os.path import join
 
+import numpy as np
 import rospy
 import rospkg
 
@@ -14,16 +15,31 @@ GOAL_POSITION = [0, 10]  # relative to the initial position
 def compute_distance(p1, p2):
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
 
+def path_coord_to_gazebo_coord(x, y):
+        RADIUS = 0.075
+        r_shift = -RADIUS - (30 * RADIUS * 2)
+        c_shift = RADIUS + 5
+
+        gazebo_x = x * (RADIUS * 2) + r_shift
+        gazebo_y = y * (RADIUS * 2) + c_shift
+
+        return (gazebo_x, gazebo_y)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
     parser.add_argument('--navigation_stack', type=str, default="jackal_helper/launch/DWA.launch",\
         help="path to the launch file of the tested navigation stack (relative to the path of this repo)")
     parser.add_argument('--world_idx', type=int, default=0)
     parser.add_argument('--gui', action="store_true")
+    parser.add_argument('--out', type=str, default="out.txt")
     args = parser.parse_args()
     
+    ##########################################################################################
+    ## 0. Launch Gazebo Simulation
+    ##########################################################################################
+    
     world_name = "BARN/world_%d.world" %(args.world_idx)
-    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))
+    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
     rospack = rospkg.RosPack()
     base_path = rospack.get_path('jackal_helper')
     
@@ -36,11 +52,12 @@ if __name__ == "__main__":
         'world_name:=' + world_name,
         'gui:=' + ("true" if args.gui else "false")
     ])
+    time.sleep(5)  # sleep to wait until the gazebo being created
     
-    rospy.init_node('gym', anonymous=True, log_level=rospy.FATAL)
+    rospy.init_node('gym', anonymous=True) #, log_level=rospy.FATAL)
     rospy.set_param('/use_sim_time', True)
     
-    # GazeboSimulation provides useful interface to communicate with gazebo simulation
+    # GazeboSimulation provides useful interface to communicate with gazebo  
     gazebo_sim = GazeboSimulation(init_position=INIT_POSITION)
     
     init_coor = (INIT_POSITION[0], INIT_POSITION[1])
@@ -58,14 +75,42 @@ if __name__ == "__main__":
         collided = gazebo_sim.get_hard_collision()
         time.sleep(1)
     
+    ##########################################################################################
+    
+    
+    
+    ##########################################################################################
+    ## 1. Launch your navigation stack
+    ## (Customize this block to add your own navigation stack)
+    ##########################################################################################
+    
     launch_file = join(base_path, '..', args.navigation_stack)
     # Your launch file should take in two arguments (goal_x and goal_y) that specifies the goal
     nav_stack_process = subprocess.Popen([
         'roslaunch',
         launch_file,
-        "goal_x:=%.2f" %GOAL_POSITION[0],
-        "goal_y:=%.2f" %GOAL_POSITION[1],
     ])
+    
+    import actionlib
+    from geometry_msgs.msg import Quaternion
+    from move_base_msgs.msg import MoveBaseGoal, MoveBaseAction
+    nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
+    mb_goal = MoveBaseGoal()
+    mb_goal.target_pose.header.frame_id = 'odom'
+    mb_goal.target_pose.pose.position.x = GOAL_POSITION[0]
+    mb_goal.target_pose.pose.position.y = GOAL_POSITION[1]
+    mb_goal.target_pose.pose.position.z = 0
+    mb_goal.target_pose.pose.orientation = Quaternion(0, 0, 0, 1)
+
+    nav_as.wait_for_server()
+    nav_as.send_goal(mb_goal)
+    
+    ##########################################################################################
+    
+    
+    ##########################################################################################
+    ## 2. Start navigation
+    ##########################################################################################
     
     curr_time = rospy.get_time()
     pos = gazebo_sim.get_model_state().pose.position
@@ -81,23 +126,53 @@ if __name__ == "__main__":
     
     # start navigation, check position, time and collision
     start_time = curr_time
+    start_time_cpu = time.time()
     collided = False
     
-    while compute_distance(goal_coor, curr_coor) > 0.3 and not collided and curr_time - start_time < 100:
+    while compute_distance(goal_coor, curr_coor) > 0.5 and not collided and curr_time - start_time < 100:
         curr_time = rospy.get_time()
         pos = gazebo_sim.get_model_state().pose.position
         curr_coor = (pos.x, pos.y)
+        print("Time: %.2f (s), x: %.2f (m), y: %.2f (m)" %(curr_time - start_time, *curr_coor), end="\r")
         collided = gazebo_sim.get_hard_collision()
-        time.sleep(0.01)
-        
+        while rospy.get_time() - curr_time < 0.1:
+            time.sleep(0.01)
+            
+    ##########################################################################################
+    
+    
+    ##########################################################################################
+    ## 3. Report metrics and generate log
+    ##########################################################################################
+    
     print(">>>>>>>>>>>>>>>>>> Test finished! <<<<<<<<<<<<<<<<<<")
+    success = False
     if collided:
         status = "collided"
     elif curr_time - start_time >= 100:
         status = "timeout"
     else:
         status = "succeeded"
+        success = True
     print("Navigation %s with time %.4f (s)" %(status, curr_time - start_time))
+    
+    path_file_name = join(base_path, "worlds/BARN/path_files", "path_%d.npy" %args.world_idx)
+    path_array = np.load(path_file_name)
+    path_array = [path_coord_to_gazebo_coord(*p) for p in path_array]
+    path_array = np.insert(path_array, 0, (INIT_POSITION[0], INIT_POSITION[1]), axis=0)
+    path_array = np.insert(path_array, len(path_array), (INIT_POSITION[0] + GOAL_POSITION[0], INIT_POSITION[1] + GOAL_POSITION[1]), axis=0)
+    path_length = 0
+    for p1, p2 in zip(path_array[:-1], path_array[1:]):
+        path_length += compute_distance(p1, p2)
+    
+    # Navigation metric: success * optimal_time / actual_time
+    nav_metric = int(success) * path_length / 2 / (curr_time - start_time)
+    print("Navigation metric: %.4f" %(nav_metric))
+    
+    with open(args.out, "a") as f:
+        f.write("%d %d %d %d %.4f %.4f\n" %(args.world_idx, success, collided, (curr_time - start_time)>=100, curr_time - start_time, nav_metric))
     
     gazebo_process.terminate()
     nav_stack_process.terminate()
+    
+    ##########################################################################################
