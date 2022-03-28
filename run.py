@@ -28,8 +28,6 @@ def path_coord_to_gazebo_coord(x, y):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
-    parser.add_argument('--navigation_stack', type=str, default="jackal_helper/launch/move_base_DWA.launch",\
-        help="path to the launch file of the tested navigation stack (relative to the path of this repo)")
     parser.add_argument('--world_idx', type=int, default=0)
     parser.add_argument('--gui', action="store_true")
     parser.add_argument('--out', type=str, default="out.txt")
@@ -38,8 +36,10 @@ if __name__ == "__main__":
     ##########################################################################################
     ## 0. Launch Gazebo Simulation
     ##########################################################################################
-    os.environ["JACKAL_FRONT_ACCESSORY_FENDER"] = "1"
-    os.environ["JACKAL_FRONT_FENDER_UST10"] = "1"
+    
+    os.environ["JACKAL_LASER"] = "1"
+    os.environ["JACKAL_LASER_MODEL"] = "ust10"
+    os.environ["JACKAL_LASER_OFFSET"] = "-0.065 0 0.01"
     
     world_name = "BARN/world_%d.world" %(args.world_idx)
     print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
@@ -77,23 +77,23 @@ if __name__ == "__main__":
         curr_coor = (pos.x, pos.y)
         collided = gazebo_sim.get_hard_collision()
         time.sleep(1)
-    
-    ##########################################################################################
-    
-    
-    
+
+
+
+
     ##########################################################################################
     ## 1. Launch your navigation stack
     ## (Customize this block to add your own navigation stack)
     ##########################################################################################
     
-    launch_file = join(base_path, '..', args.navigation_stack)
-    # Your launch file should take in two arguments (goal_x and goal_y) that specifies the goal
+    launch_file = join(base_path, '..', 'jackal_helper/launch/move_base_DWA.launch')
     nav_stack_process = subprocess.Popen([
         'roslaunch',
         launch_file,
     ])
     
+    # Make sure your navigation stack recives a goal of (0, 10, 0), which is 10 meters away
+    # along postive y-axis.
     import actionlib
     from geometry_msgs.msg import Quaternion
     from move_base_msgs.msg import MoveBaseGoal, MoveBaseAction
@@ -107,10 +107,10 @@ if __name__ == "__main__":
 
     nav_as.wait_for_server()
     nav_as.send_goal(mb_goal)
-    
-    ##########################################################################################
-    
-    
+
+
+
+
     ##########################################################################################
     ## 2. Start navigation
     ##########################################################################################
@@ -140,8 +140,8 @@ if __name__ == "__main__":
         collided = gazebo_sim.get_hard_collision()
         while rospy.get_time() - curr_time < 0.1:
             time.sleep(0.01)
-            
-    ##########################################################################################
+
+
     
     
     ##########################################################################################
@@ -176,6 +176,3 @@ if __name__ == "__main__":
         f.write("%d %d %d %d %.4f %.4f\n" %(args.world_idx, success, collided, (curr_time - start_time)>=100, curr_time - start_time, nav_metric))
     
     gazebo_process.terminate()
-    nav_stack_process.terminate()
-    
-    ##########################################################################################

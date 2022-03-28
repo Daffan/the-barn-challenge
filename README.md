@@ -79,21 +79,17 @@ sudo singularity build --notest nav_competition_image.sif Singularityfile.def
 ```
 
 ## Run Simulations
-Navigate to the folder of this repo
+Navigate to the folder of this repo. Below is the example to run move_base with DWA as local planner.
 
 If you run it on your local machines: (the example below runs [move_base](http://wiki.ros.org/move_base) with DWA local planner in world 0)
 ```
 source ../../devel/setup.sh
-python3 run.py \
---world_idx 0 \
---navigation_stack jackal_helper/launch/move_base_DWA.launch
+python3 run.py --world_idx 0
 ```
 
 If you run it in a Singularity container:
 ```
-./singularity_run.sh /path/to/image/file python3 run.py \
---world_idx 0 \
---navigation_stack jackal_helper/launch/move_base_DWA.launch
+./singularity_run.sh /path/to/image/file python3 run.py --world_idx 0
 ```
 
 A successful run should print the episode status (collided/succeeded/timeout) and the time cost in second:
@@ -113,16 +109,12 @@ A successful run should print the episode status (collided/succeeded/timeout) an
 ## Test your own navigation stack
 We currently don't provide a lot of instructions or a standard API for implementing the navigation stack, but we might add more in this section depending on people's feedback. If you are new to the ROS or mobile robot navigation, we suggest checking [move_base](http://wiki.ros.org/move_base) which provides basic interface to manipulate a robot.
 
-We recommand building your navigation stack as a separate ROS package and upload it on github. Once you have you own github repo, clone it under the path `/<YOUR_HOME_DIC>/jackal_ws/src`, then rebuild the workspace. if you use Singularity containers, add the command to clone your repo before line 18 in `Singularityfile.def`
-
-Your navigation stack should be called with a single launch file (similar to `jackal_helper/launch/move_base_DWA.launch` or `jackal_helper/launch/move_base_eband.launch`). The launch file takes two arguments: `goal_x` and `goal_y` that specifies the relative goal location in the world frame.
-
-You can then test your own navigation stack as follow:
+The suggested work flow is to edit section 1 in `run.py` file (line 89-109) that initialize your own navigation stack. You should not edit other parts in this file. We provide a bash script `test.sh` to run your navigation stack on 50 uniformly sampled BARN worlds with 10 runs for each world. Once the tests finish, run `python report_test.py --out_path /path/to/out/file` to report the test. Below is an example of DWA:
 ```
-python3 run.py \
---world_idx 0 \
---navigation_stack ../<YOUR_REPO>/<YOUR_LAUNCH_FILE>
+python report_test.py --out_path res/dwa_out.txt
 ```
+You should see the report as this:
+>Avg Time: 39.5296, Avg Metric: 0.1577, Avg Success: 0.8500, Avg Collision: 0.0560, Avg Timeout: 0.0940
 
 ## Submission
-TBD...
+Submit a link to download your customized repository to this [Google form](). Your navigation stack will be tested in the Singularity container on 50 hold-out BARN worlds sampled from the same distribution as the 300 BARN worlds. In the repository, make sure the `run.py` runs your navigation stack and `Singularityfile.def` installs all the dependencies of your repo. We suggest to actually build an image and test it with `./singularity_run.sh /path/to/image/file python3 run.py --world_idx 0`. 
