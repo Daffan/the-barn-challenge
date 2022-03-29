@@ -168,8 +168,8 @@ if __name__ == "__main__":
     for p1, p2 in zip(path_array[:-1], path_array[1:]):
         path_length += compute_distance(p1, p2)
     
-    # Navigation metric: success * optimal_time / actual_time
-    nav_metric = int(success) * path_length / 2 / (curr_time - start_time)
+    # Navigation metric: success *  actual_time / optimal_time (the lower the better)
+    nav_metric = int(success) * (curr_time - start_time) / path_length * 2
     print("Navigation metric: %.4f" %(nav_metric))
     
     with open(args.out, "a") as f:
