@@ -132,7 +132,7 @@ if __name__ == "__main__":
     start_time_cpu = time.time()
     collided = False
     
-    while compute_distance(goal_coor, curr_coor) > 0.5 and not collided and curr_time - start_time < 100:
+    while compute_distance(goal_coor, curr_coor) > 1 and not collided and curr_time - start_time < 100:
         curr_time = rospy.get_time()
         pos = gazebo_sim.get_model_state().pose.position
         curr_coor = (pos.x, pos.y)
@@ -168,8 +168,10 @@ if __name__ == "__main__":
     for p1, p2 in zip(path_array[:-1], path_array[1:]):
         path_length += compute_distance(p1, p2)
     
-    # Navigation metric: success *  actual_time / optimal_time (the lower the better)
-    nav_metric = int(success) * (curr_time - start_time) / path_length * 2
+    # Navigation metric: 1_success *  optimal_time / clip(actual_time, 4 * optimal_time, 8 * optimal_time)
+    optimal_time = path_length / 2
+    actual_time = curr_time - start_time
+    nav_metric = int(success) * optimal_time / np.clip(actual_time, 4 * optimal_time, 8 * optimal_time)
     print("Navigation metric: %.4f" %(nav_metric))
     
     with open(args.out, "a") as f:
