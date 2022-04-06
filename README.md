@@ -31,7 +31,7 @@ export PATH="/<YOUR_HOME_DIR>/nav_challenge/bin:$PATH"
 
 2. Install Python dependencies
 ```
-pip3 install defusedxml rospkg netifaces numpy
+pip3 install defusedxml rospkg netifaces numpy pyyaml scipy torch==1.7 torchvision==0.8 tensorboard
 ```
 
 3. Create ROS workspace
@@ -47,6 +47,8 @@ git clone https://github.com/jackal/jackal.git
 git clone https://github.com/jackal/jackal_simulator.git
 git clone https://github.com/jackal/jackal_desktop.git
 git clone https://github.com/utexas-bwi/eband_local_planner.git
+git clone https://github.com/LearningUAV/hallucination.git
+chmod +x hallucination/LfD_2D/run_policy.py
 ```
 
 5. Install ROS package dependencies
