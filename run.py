@@ -86,7 +86,7 @@ if __name__ == "__main__":
     ## (Customize this block to add your own navigation stack)
     ##########################################################################################
     
-    launch_file = join(base_path, '..', 'jackal_helper/launch/move_base_DWA.launch')
+    launch_file = join(base_path, '..', 'jackal_helper/launch/move_base_eband.launch')
     nav_stack_process = subprocess.Popen([
         'roslaunch',
         launch_file,
