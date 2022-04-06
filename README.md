@@ -114,7 +114,9 @@ The suggested work flow is to edit section 1 in `run.py` file (line 89-109) that
 python report_test.py --out_path res/dwa_out.txt
 ```
 You should see the report as this:
->Avg Time: 39.5296, Avg Metric: 0.1577, Avg Success: 0.8500, Avg Collision: 0.0560, Avg Timeout: 0.0940
+>Avg Time: 33.4715, Avg Metric: 0.1693, Avg Success: 0.8800, Avg Collision: 0.0480, Avg Timeout: 0.0720
+
+Except for `DWA`, we also provide three learning-based navigation stack as examples (see branch `LfH`, `applr` and `e2e`).
 
 ## Submission
-Submit a link that downloads your customized repository to this [Google form](https://docs.google.com/forms/d/e/1FAIpQLScGCMwVm-Kzg2c3kkXd_IUNwHw8D3s06ydCg4lPgOJYkEy8aQ/viewform?usp=sf_link). Your navigation stack will be tested in the Singularity container on 50 hold-out BARN worlds sampled from the same distribution as the 300 BARN worlds. In the repository, make sure the `run.py` runs your navigation stack and `Singularityfile.def` installs all the dependencies of your repo. We suggest to actually build an image and test it with `./singularity_run.sh /path/to/image/file python3 run.py --world_idx 0`. 
+Submit a link that downloads your customized repository to this [Google form](https://docs.google.com/forms/d/e/1FAIpQLScGCMwVm-Kzg2c3kkXd_IUNwHw8D3s06ydCg4lPgOJYkEy8aQ/viewform?usp=sf_link). Your navigation stack will be tested in the Singularity container on 50 hold-out BARN worlds sampled from the same distribution as the 300 BARN worlds. In the repository, make sure the `run.py` runs your navigation stack and `Singularityfile.def` installs all the dependencies of your repo. We suggest to actually build an image and test it with `./singularity_run.sh /path/to/image/file python3 run.py --world_idx 0`. You can also refer to branch `LfH`, `applr` and `e2e`, which are in the correct form for submissions.
