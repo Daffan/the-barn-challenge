@@ -1,0 +1,7 @@
+gym>=0.17.3
+GPUtil>=1.4.0
+defusedxml>=0.6.0
+rospkg>=1.2.8
+netifaces>=0.10.9
+tensorboardX>=2.2
+torch>=1.10.2

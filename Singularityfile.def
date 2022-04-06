@@ -13,6 +13,7 @@ From: ros:melodic
     export PATH="/venv/bin:$PATH"
     pip3 install --upgrade pip
     pip3 install defusedxml rospkg netifaces numpy
+    pip3 install -r requirements.txt
     
     cd /jackal_ws/src
     git clone https://github.com/jackal/jackal.git
