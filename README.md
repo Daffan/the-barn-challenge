@@ -57,7 +57,7 @@ rosdep init; rosdep update
 rosdep install -y --from-paths . --ignore-src --rosdistro=melodic
 ```
 
-6. Build the workspace
+6. Build the workspace (if `catkin_make` fails, try changing `-std=c++11` to `-std=c++17` in `jackal_helper/CMakeLists.txt` line 3)
 ```
 source devel/setup.bash
 catkin_make
