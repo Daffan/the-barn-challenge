@@ -40,21 +40,21 @@ mkdir -p /<YOUR_HOME_DIR>/jackal_ws/src
 cd /<YOUR_HOME_DIR>/jackal_ws/src
 ```
 
-4. Clone this repo and required ros packages
+4. Clone this repo and required ros packages: (replace `<YOUR_ROS_VERSION>` with your own, e.g. melodic)
 ```
 git clone https://github.com/Daffan/nav-competition-icra2022.git
-git clone https://github.com/jackal/jackal.git
-git clone https://github.com/jackal/jackal_simulator.git
-git clone https://github.com/jackal/jackal_desktop.git
+git clone https://github.com/jackal/jackal.git --branch <YOUR_ROS_VERSION>-devel
+git clone https://github.com/jackal/jackal_simulator.git --branch <YOUR_ROS_VERSION>-devel
+git clone https://github.com/jackal/jackal_desktop.git --branch <YOUR_ROS_VERSION>-devel
 git clone https://github.com/utexas-bwi/eband_local_planner.git
 ```
 
-5. Install ROS package dependencies
+5. Install ROS package dependencies: (replace `<YOUR_ROS_VERSION>` with your own, e.g. melodic)
 ```
 cd ..
 source /opt/ros/<YOUR_ROS_VERSION>/setup.bash
 rosdep init; rosdep update
-rosdep install -y --from-paths . --ignore-src --rosdistro=melodic
+rosdep install -y --from-paths . --ignore-src --rosdistro=<YOUR_ROS_VERSION>
 ```
 
 6. Build the workspace (if `catkin_make` fails, try changing `-std=c++11` to `-std=c++17` in `jackal_helper/CMakeLists.txt` line 3)

@@ -15,9 +15,9 @@ From: ros:melodic
     pip3 install defusedxml rospkg netifaces numpy
     
     cd /jackal_ws/src
-    git clone https://github.com/jackal/jackal.git
-    git clone https://github.com/jackal/jackal_simulator.git
-    git clone https://github.com/jackal/jackal_desktop.git
+    git clone https://github.com/jackal/jackal.git --branch melodic-devel
+    git clone https://github.com/jackal/jackal_simulator.git --branch melodic-devel
+    git clone https://github.com/jackal/jackal_desktop.git --branch melodic-devel
     git clone https://github.com/utexas-bwi/eband_local_planner.git
 
     source /opt/ros/melodic/setup.bash
