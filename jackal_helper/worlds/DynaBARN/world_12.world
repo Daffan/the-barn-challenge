@@ -1,0 +1,743 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+   <world name="default">
+      <include>
+         <uri>model://ground_plane</uri>
+      </include>
+      <include>
+         <uri>model://sun</uri>
+      </include>
+
+    <model name='easylibobs_11'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_11' filename='easylibobs_11.so'/>
+    </model>
+
+    <model name='easylibobs_58'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_58' filename='easylibobs_58.so'/>
+    </model>
+
+    <model name='easylibobs_59'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_59' filename='easylibobs_59.so'/>
+    </model>
+
+    <model name='easylibobs_13'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_13' filename='easylibobs_13.so'/>
+    </model>
+
+    <model name='easylibobs_78'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_78' filename='easylibobs_78.so'/>
+    </model>
+
+    <model name='easylibobs_28'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_28' filename='easylibobs_28.so'/>
+    </model>
+
+    <model name='easylibobs_141'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_141' filename='easylibobs_141.so'/>
+    </model>
+
+    <model name='easylibobs_94'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_94' filename='easylibobs_94.so'/>
+    </model>
+
+    <model name='easylibobs_128'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_128' filename='easylibobs_128.so'/>
+    </model>
+
+    <model name='easylibobs_177'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_177' filename='easylibobs_177.so'/>
+    </model>
+
+    <model name='easylibobs_110'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='easylibobs_110' filename='easylibobs_110.so'/>
+    </model>
+
+      <model name="back_wall">
+      <static>1</static>\   <pose frame=>-10 0 .5 0 0 0</pose>        <link name="box_link">
+
+
+	<collision name='collision'>
+            <geometry>
+              <box>
+                <size>.5 20 1</size>
+              </box>
+            </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+
+
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>.5 20 1</size>
+              </box>
+            </geometry>
+          <material>
+                 <script>
+                     <name>Gazebo/Blue</name>
+                         <uri>file://media/materials/scripts/gazebo.material</uri>
+                         </script>
+                     </material>
+          </visual>
+        </link>
+      </model>
+      <model name="top_wall">
+      <static>1</static>
+       <pose frame=>0 10 .5 0 0 0</pose>        <link name="box_link">
+
+	<collision name='collision'>
+           <geometry>
+              <box>
+                <size>20 .5 1</size>
+              </box>
+            </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>20 .5 1</size>
+              </box>
+            </geometry>
+          <material>
+                 <script>
+                     <name>Gazebo/Blue</name>
+                         <uri>file://media/materials/scripts/gazebo.material</uri>
+                         </script>
+                     </material>
+          </visual>
+        </link>
+      </model>
+      <model name="bottom_wall">
+      <static>1</static>
+       <pose frame=>0 -10 .5 0 0 0</pose>        <link name="box_link">
+	<collision name='collision'>
+            <geometry>
+              <box>
+                <size>20 .5 1</size>
+              </box>
+            </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>20 .5 1</size>
+              </box>
+            </geometry>
+          <material>
+                 <script>
+                     <name>Gazebo/Blue</name>
+                         <uri>file://media/materials/scripts/gazebo.material</uri>
+                         </script>
+                     </material>
+          </visual>
+        </link>
+      </model>
+   </world>
+</sdf>
