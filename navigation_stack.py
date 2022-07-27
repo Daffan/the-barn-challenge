@@ -1,8 +1,14 @@
 import numpy as np
 import time
+import os
+import yaml
+from collections import deque
 # import scipy
 
 import rospy
+
+from td3.td3 import *
+from td3.net import *
 
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Path, Odometry
@@ -68,14 +74,153 @@ class StepRecorder:
         if self.global_path is None:
             print("path is None")
             return None
-        laser_scan = self.laser_scan
+        laser_scan = np.array(self.laser_scan)
+        laser_scan[laser_scan > 20] = 20
+        laser_scan = (laser_scan - 20 / 2.) / 20 * 2 # scale to (-1, 1)
 
         goal = self.global_path[-1]  # Goal is the last point on the global path
         # transform the goal coordinates in robot's frame
-        goal = self.transform_lg(goal, self.X, self.Y, self.PSI).reshape(-1)
+        goal = self.transform_lg(goal, self.X, self.Y, self.PSI).reshape(-1) / 10.0
 
         # observation is laser_scan + goal coordinate
         return np.concatenate([laser_scan, goal])
+
+def get_encoder(encoder_type, args):
+    if encoder_type == "mlp":
+        encoder=MLPEncoder(**args)
+    elif encoder_type == 'rnn':
+        encoder=RNNEncoder(**args)
+    elif encoder_type == 'cnn':
+        encoder=CNNEncoder(**args)
+    elif encoder_type == 'transformer':
+        encoder=TransformerEncoder(**args)
+    elif encoder_type == 'hybrid':
+        encoder=HybridEncoder(**args)
+    elif encoder_type == 'hybrid_transformer':
+        encoder=HybridTransformerEncoder(**args)
+    else:
+        raise Exception(f"[error] Unknown encoder type {encoder_type}!")
+    return encoder
+
+def init_policy(config_path):
+    with open(os.path.join(config_path, "config.yaml"), 'r') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+
+    training_config = config["training_config"]
+
+    state_dim = (724,)
+    action_dim = 2
+    action_space_low = np.array([-1, -3.14])
+    action_space_high = np.array([2, 3.14])
+    # devices = GPUtil.getAvailable(order = 'first', limit = 1, maxLoad = 0.8, maxMemory = 0.8, includeNan=False, excludeID=[], excludeUUID=[])
+    device = "cpu"  # "cuda:%d" %(devices[0]) if len(devices) > 0 else "cpu"
+    print("    >>>> Running on device %s" %(device))
+
+    encoder_type = training_config["encoder"]
+    encoder_args = {
+        'input_dim': state_dim[-1],  # np.prod(state_dim),
+        'num_layers': training_config['encoder_num_layers'],
+        'hidden_size': training_config['encoder_hidden_layer_size'],
+        'history_length': config["env_config"]["stack_frame"],
+    }
+
+    input_dim = training_config['hidden_layer_size']
+    actor = Actor(
+        #state_preprocess=state_preprocess,
+        state_preprocess=get_encoder(encoder_type, encoder_args),
+        head=MLP(input_dim, training_config['encoder_num_layers'], training_config['encoder_hidden_layer_size']),
+        #head=nn.Identity(),
+        action_dim=action_dim
+    ).to(device)
+    actor_optim = torch.optim.Adam(
+        actor.parameters(), 
+        lr=training_config['actor_lr']
+    )
+    print("Total number of parameters: %d" %sum(p.numel() for p in actor.parameters()))
+    input_dim += np.prod(action_dim)
+    critic = Critic(
+        state_preprocess=get_encoder(encoder_type, encoder_args),
+        head=MLP(input_dim, training_config['encoder_num_layers'], training_config['encoder_hidden_layer_size']),
+        #head=nn.Identity(),
+    ).to(device)
+    critic_optim = torch.optim.Adam(
+        critic.parameters(), 
+        lr=training_config['critic_lr']
+    )
+    if training_config["dyna_style"]:
+        model = Model(
+            state_preprocess=get_encoder(encoder_type, encoder_args),
+            head=MLP(input_dim, training_config['encoder_num_layers'], training_config['encoder_hidden_layer_size']),
+            state_dim=state_dim,
+            deterministic=training_config['deterministic']
+        ).to(device)
+        model_optim = torch.optim.Adam(
+            model.parameters(), 
+            lr=training_config['model_lr']
+        )
+        policy = DynaTD3(
+            model, model_optim,
+            training_config["model_update_per_step"],
+            training_config["n_simulated_update"],
+            actor, actor_optim,
+            critic, critic_optim,
+            action_range=[action_space_low, action_space_high],
+            device=device,
+            **training_config["policy_args"]
+        )
+    elif training_config["MPC"]:
+        model = Model(
+            state_preprocess=get_encoder(encoder_type, encoder_args),
+            head=MLP(input_dim, training_config['encoder_num_layers'], training_config['encoder_hidden_layer_size']),
+            state_dim=state_dim,
+            deterministic=training_config['deterministic']
+        ).to(device)
+        model_optim = torch.optim.Adam(
+            model.parameters(), 
+            lr=training_config['model_lr']
+        )
+        policy = SMCPTD3(
+            model, model_optim,
+            training_config["horizon"],
+            training_config["num_particle"],
+            training_config["model_update_per_step"],
+            actor, actor_optim,
+            critic, critic_optim,
+            action_range=[action_space_low, action_space_high],
+            device=device,
+            **training_config["policy_args"]
+        )
+    elif training_config["safe_rl"]:
+        safe_critic = Critic(
+            state_preprocess=get_encoder(encoder_type, encoder_args),
+            head=MLP(input_dim, training_config['encoder_num_layers'], training_config['encoder_hidden_layer_size']),
+        ).to(device)
+        safe_critic_optim = torch.optim.Adam(
+            safe_critic.parameters(), 
+            lr=training_config['critic_lr']
+        )
+        policy = TD3(
+            actor, actor_optim, 
+            critic, critic_optim, 
+            action_range=[action_space_low, action_space_high],
+            safe_critic=safe_critic, safe_critic_optim=safe_critic_optim,
+            device=device,
+            safe_lagr=training_config['safe_lagr'],
+            safe_mode=training_config['safe_mode'],
+            **training_config["policy_args"]
+        )
+    else:
+        policy = TD3(
+            actor, actor_optim, 
+            critic, critic_optim, 
+            action_range=[action_space_low, action_space_high],
+            device=device,
+            **training_config["policy_args"]
+        )
+
+    policy.load(config_path, "last_policy")
+    policy.exploration_noise = 0.0
+    return policy
 
 if __name__ == "__main__":
     FREQUENCY = 5.0  # In Hz
@@ -106,14 +251,26 @@ if __name__ == "__main__":
     cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 
     ## Initialize your policy here
+    policy = init_policy("models/0725/easy")
+    act = np.zeros(2)
+    hh = deque(maxlen=8)
 
     while step_recorder.get_obs() is None:
         time.sleep(0.1)
+    obs = step_recorder.get_obs()
+    obs = np.concatenate([obs, act])
+    hh.extend([obs] * 8)
 
     time = rospy.get_time()
     while not rospy.is_shutdown():
         obs = step_recorder.get_obs()
-        v, w = 0.5, 0  # sample action from your policy
+        obs = np.concatenate([obs, act])
+        print(obs[-4:-2] * 10, act)
+        hh.append(obs)
+        obs = np.stack(hh)
+        act = policy.select_action(obs)
+        v, w = act[0], act[1]
+        
         cmd_vel_value = Twist()
         cmd_vel_value.linear.x = v
         cmd_vel_value.angular.z = w
