@@ -178,3 +178,6 @@ if __name__ == "__main__":
         f.write("%d %d %d %d %.4f %.4f\n" %(args.world_idx, success, collided, (curr_time - start_time)>=100, curr_time - start_time, nav_metric))
     
     gazebo_process.terminate()
+    gazebo_process.wait()
+    nav_stack_process.terminate()
+    nav_stack_process.wait()
