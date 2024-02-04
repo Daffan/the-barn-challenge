@@ -18,7 +18,7 @@ If you run it on a local machine without containers:
 
 If you run it in Singularity containers:
 * Go version at least 1.13
-* Singularity version at least 3.6.3
+* Singularity version at least 3.6.3 and less than 4.02
 
 The requirements above are just suggestions. If you run into any issue, please contact organizers for help (zfxu@utexas.edu).
 
