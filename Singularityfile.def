@@ -5,7 +5,7 @@ From: ros:melodic
     mkdir -p ${SINGULARITY_ROOTFS}/jackal_ws/src
 
 %files
-    . /jackal_ws/src/barn-competition-icra
+    . /jackal_ws/src/the-barn-challenge
 
 %post -c /bin/bash
     apt -y update; apt-get -y install python3-venv
