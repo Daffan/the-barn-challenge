@@ -5,7 +5,7 @@ From: ros:melodic
     mkdir -p ${SINGULARITY_ROOTFS}/jackal_ws/src
 
 %files
-    . /jackal_ws/src/nav-competition-icra2022
+    . /jackal_ws/src/barn-competition-icra
 
 %post -c /bin/bash
     apt -y update; apt-get -y install python3-venv

@@ -4,7 +4,10 @@
 
 --------------------------------------------------------------------------------
 
-# ICRA 2022 BARN Challenge
+# ICRA BARN Navigation Challenge
+
+## Updates:
+* 02/04/2024: Adding 60 (DynaBARN)[https://github.com/aninair1905/DynaBARN] environments. DynaBARN environments can be accessed by world indexes from 300-359.
 
 ## Requirements
 If you run it on a local machine without containers:
@@ -42,7 +45,7 @@ cd /<YOUR_HOME_DIR>/jackal_ws/src
 
 4. Clone this repo and required ros packages: (replace `<YOUR_ROS_VERSION>` with your own, e.g. melodic)
 ```
-git clone https://github.com/Daffan/nav-competition-icra2022.git
+git clone https://github.com/Daffan/barn-competition-icra.git
 git clone https://github.com/jackal/jackal.git --branch <YOUR_ROS_VERSION>-devel
 git clone https://github.com/jackal/jackal_simulator.git --branch <YOUR_ROS_VERSION>-devel
 git clone https://github.com/jackal/jackal_desktop.git --branch <YOUR_ROS_VERSION>-devel
@@ -65,12 +68,12 @@ catkin_make
 
 Follow the instruction below to run simulations in Singularity containers.
 
-1. Follow this instruction to install Singularity: https://sylabs.io/guides/3.0/user-guide/installation.html. Singularity version >= 3.6.3 is required to successfully build the image!
+1. Follow this instruction to install Singularity: https://sylabs.io/guides/3.0/user-guide/installation.html. Singularity version >= 3.6.3 and <= 4.02 is required to successfully build the image!
 
 2. Clone this repo
 ```
-git clone https://github.com/Daffan/nav-competition-icra2022.git
-cd nav-competition-icra2022
+git clone https://github.com/Daffan/barn-competition-icra.git
+cd barn-competition-icra
 ```
 
 3. Build Singularity image (sudo access required)

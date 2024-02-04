@@ -41,10 +41,21 @@ if __name__ == "__main__":
     os.environ["JACKAL_LASER_MODEL"] = "ust10"
     os.environ["JACKAL_LASER_OFFSET"] = "-0.065 0 0.01"
     
-    world_name = "BARN/world_%d.world" %(args.world_idx)
+    if args.world_idx < 300:  # static environment from 0-299
+        world_name = "BARN/world_%d.world" %(args.world_idx)
+        INIT_POSITION = [-2.25, 3, 1.57]  # in world frame
+        GOAL_POSITION = [0, 10]  # relative to the initial position
+    elif args.world_idx < 360:  # Dynamic environment from 300-359
+        world_name = "DynaBARN/world_%d.world" %(args.world_idx - 300)
+        INIT_POSITION = [11, 0, 3.14]  # in world frame
+        GOAL_POSITION = [-20, 0]  # relative to the initial position
+    else:
+        raise ValueError("World index %d does not exist" %args.world_idx)
+    
     print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
     rospack = rospkg.RosPack()
     base_path = rospack.get_path('jackal_helper')
+    os.environ['GAZEBO_PLUGIN_PATH'] = os.path.join(base_path, "plugins")
     
     launch_file = join(base_path, 'launch', 'gazebo_launch.launch')
     world_name = join(base_path, "worlds", world_name)
@@ -92,8 +103,7 @@ if __name__ == "__main__":
         launch_file,
     ])
     
-    # Make sure your navigation stack recives a goal of (0, 10, 0), which is 10 meters away
-    # along postive y-axis.
+    # Make sure your navigation stack recives the correct goal position defined in GOAL_POSITION
     import actionlib
     from geometry_msgs.msg import Quaternion
     from move_base_msgs.msg import MoveBaseGoal, MoveBaseAction
@@ -159,19 +169,22 @@ if __name__ == "__main__":
         success = True
     print("Navigation %s with time %.4f (s)" %(status, curr_time - start_time))
     
-    path_file_name = join(base_path, "worlds/BARN/path_files", "path_%d.npy" %args.world_idx)
-    path_array = np.load(path_file_name)
-    path_array = [path_coord_to_gazebo_coord(*p) for p in path_array]
-    path_array = np.insert(path_array, 0, (INIT_POSITION[0], INIT_POSITION[1]), axis=0)
-    path_array = np.insert(path_array, len(path_array), (INIT_POSITION[0] + GOAL_POSITION[0], INIT_POSITION[1] + GOAL_POSITION[1]), axis=0)
-    path_length = 0
-    for p1, p2 in zip(path_array[:-1], path_array[1:]):
-        path_length += compute_distance(p1, p2)
+    if args.world_idx >= 300:  # DynaBARN environment which does not have a planned path
+        path_length = GOAL_POSITION[0] - INIT_POSITION[0]
+    else:
+        path_file_name = join(base_path, "worlds/BARN/path_files", "path_%d.npy" %args.world_idx)
+        path_array = np.load(path_file_name)
+        path_array = [path_coord_to_gazebo_coord(*p) for p in path_array]
+        path_array = np.insert(path_array, 0, (INIT_POSITION[0], INIT_POSITION[1]), axis=0)
+        path_array = np.insert(path_array, len(path_array), (INIT_POSITION[0] + GOAL_POSITION[0], INIT_POSITION[1] + GOAL_POSITION[1]), axis=0)
+        path_length = 0
+        for p1, p2 in zip(path_array[:-1], path_array[1:]):
+            path_length += compute_distance(p1, p2)
     
-    # Navigation metric: 1_success *  optimal_time / clip(actual_time, 4 * optimal_time, 8 * optimal_time)
+    # Navigation metric: 1_success *  optimal_time / clip(actual_time, 2 * optimal_time, 8 * optimal_time)
     optimal_time = path_length / 2
     actual_time = curr_time - start_time
-    nav_metric = int(success) * optimal_time / np.clip(actual_time, 4 * optimal_time, 8 * optimal_time)
+    nav_metric = int(success) * optimal_time / np.clip(actual_time, 2 * optimal_time, 8 * optimal_time)
     print("Navigation metric: %.4f" %(nav_metric))
     
     with open(args.out, "a") as f:
