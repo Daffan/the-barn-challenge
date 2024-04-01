@@ -1,0 +1,61 @@
+env_config:
+  use_container: True
+  env_id: "motion_control_continuous_laser-v0"
+  seed: 14
+  stack_frame: 1   # span 1, 4, 8
+  kwargs:
+    world_name: "world_0.world"
+    gui: false
+    verbose: false
+    max_step: 400
+    time_step: 0.2
+    slack_reward: 0
+    collision_reward: -1
+    failure_reward: 0
+    success_reward: 20
+    goal_reward: 1
+    max_collision: 1
+    init_position: [-2, 3, 1.57]
+    goal_position: [0, 10, 0]
+
+    laser_clip: 5
+    min_v: -1
+    max_v: 2
+    min_w: -3.14
+    max_w: 3.14
+
+training_config:
+  algorithm: "SAC"
+  encoder: "mlp"  # span "mlp", "cnn", "rnn", "transformer"
+  buffer_size: 200000
+  actor_lr: 0.00001
+  critic_lr: 0.00002
+  # For head
+  num_layers: 1
+  hidden_layer_size: 512
+  # For encoder
+  encoder_num_layers: 2
+  encoder_hidden_layer_size: 512
+  pre_collect: 10
+  log_intervals: 2
+
+  policy_args:
+    tau: 0.005
+    gamma: 0.99
+    alpha: 0.2
+    automatic_entropy_tuning: True
+    n_step: 4
+
+  training_args:
+    max_step: 4000000
+    collect_per_step: 10
+    update_per_step: 1024
+    batch_size: 128
+
+container_config:
+  # 5 container running in parallel
+  num_actor: 5
+  # 50 training static worlds
+  worlds: [153, 43, 20, 209, 74, 274, 127, 192, 56, 291, 242, 29, 238, 170, 286, 52, 243, 157, 116, 131, 23, 276, 231, 273, 51, 247, 266, 110, 166, 225, 207, 236, 280, 35, 49, 65, 105, 80, 67, 109, 18, 177, 75, 195, 249, 26, 264, 83, 149, 176]
+  # 50 test static worlds
+  test_worlds: [250, 292, 97, 162, 219, 125, 142, 289, 1, 106, 227, 79, 132, 31, 151, 220, 91, 228, 160, 145, 224, 152, 10, 252, 69, 174, 244, 208, 158, 214, 211, 37, 120, 271, 99, 21, 4, 5, 2, 32, 14, 96, 139, 212, 245, 84, 156, 128, 58, 48]
