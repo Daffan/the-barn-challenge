@@ -7,6 +7,7 @@
 # ICRA BARN Navigation Challenge
 
 ## Updates:
+* 01/15/2025: Adding support for ROS2 in [The-Barn-Challenge-Ros2](https://github.com/Saadmaghani/The-Barn-Challenge-Ros2).
 * 02/04/2024: Adding 60 [DynaBARN](https://github.com/aninair1905/DynaBARN) environments. DynaBARN environments can be accessed by world indexes from 300-359.
 
 ## Requirements
